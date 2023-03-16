@@ -1,6 +1,5 @@
 package com.hanhong.springbootmall.dao.impl;
 
-import com.hanhong.springbootmall.constant.ProductCategory;
 import com.hanhong.springbootmall.dao.ProductDao;
 import com.hanhong.springbootmall.dto.ProductQueryParams;
 import com.hanhong.springbootmall.dto.ProductRequest;
@@ -12,7 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
 import java.util.HashMap;
