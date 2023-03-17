@@ -22,3 +22,12 @@
 * Spring boot
 * H2
 * MySQL
+## 資料夾說明
+### dao
+* 負責與資料庫進行溝通
+### service
+* 負責主要商業行為邏輯
+### controller
+* 負責接收Http request
+### test
+* 放單元測試程式碼
