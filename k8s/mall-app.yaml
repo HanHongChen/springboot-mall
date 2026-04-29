@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mall-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mall
+  template:
+    metadata:
+      labels:
+        app: mall
+    spec:
+      containers:
+      - name: mall-app
+        image: springboot-mall:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: secret-config
+              key: DB_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: secret-config
+              key: DB_USER
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: secret-config
+              key: DB_PASS
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-service
+spec:
+  type: NodePort  # 讓外部可以連進來
+  selector:
+    app: mall
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080 # 固定一個外部埠口，方便 Postman 測試接下來解釋這個
