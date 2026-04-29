@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     
     steps:
     - name: Checkout code
@@ -17,6 +17,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        cache: maven
 
     - name: Build with Maven
       run: mvn clean package -DskipTests
@@ -34,13 +35,8 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/springboot-mall-app:latest
 
-    - name: Deploy to Kubernetes
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          export KUBECONFIG=$HOME/.kube/config
-          kubectl rollout restart deployment mall-app
-          kubectl rollout status deployment mall-app
+    - name: Update  Kubernetes
+      run: |
+        export KUBECONFIG=$HOME/.kube/config
+        kubectl rollout restart deployment mall-app
+        kubectl rollout status deployment mall-app
