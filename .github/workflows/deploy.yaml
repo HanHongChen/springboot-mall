@@ -33,3 +33,14 @@ jobs:
         context: .
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/springboot-mall-app:latest
+
+    - name: Deploy to Kubernetes
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          export KUBECONFIG=$HOME/.kube/config
+          kubectl rollout restart deployment mall-app
+          kubectl rollout status deployment mall-app
